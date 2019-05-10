@@ -8,6 +8,16 @@ logger = logging.getLogger(__name__)
 libpath = os.path.join(os.path.dirname(os.path.realpath(__file__)), './target/release/libproofofwork.so')
 
 def _wrap_crack_pow(prefix, libpow, k, thread_id, ret, done):
+    """
+    This function wraps the libproofofwork shared object.
+
+    prefix:str the challenge string
+    libpow:module the loaded shared object
+    k:int number of zero bits in the result
+    thread_id:int the unique identifier for this thread
+    ret:dict threadsafe return dictionary
+    done:event multi-thread event to tell the main thread we're complete
+    """
     logger.debug("%s._crack_pow(%r)", __name__, locals())
     #python3 handles bytes weird
     bytes_args = (prefix, "utf-8") if sys.version_info >= (3,0) else (prefix,)
@@ -22,6 +32,12 @@ def _wrap_crack_pow(prefix, libpow, k, thread_id, ret, done):
     done.set()
     
 def solve_pow(prefix, k):
+    """
+    This function spawns multiple instances of the libproofofwork.
+
+    prefix:str the challenge string
+    k:int number of zero bits in the result
+    """
     logger.debug("%s.solve_pow(%r)", __name__, locals())
     #load libproofofwork
     libpow = cdll.LoadLibrary(libpath)
