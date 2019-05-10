@@ -1,1 +1,1 @@
-from proofofwork import solve_pow
+from proofofwork.proofofwork import solve_pow
