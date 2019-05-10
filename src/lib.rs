@@ -1,7 +1,6 @@
 #![allow(unused_variables)]
 #![allow(dead_code)]
 
-extern crate num_cpus;
 extern crate sha2;
 extern crate byteorder;
 

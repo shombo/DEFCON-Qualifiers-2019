@@ -6,7 +6,7 @@ docker or rust
 
 and
 
-python > 3.6
+python
 
 ## Building
 
