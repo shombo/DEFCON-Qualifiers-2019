@@ -2,11 +2,10 @@
 
 ## Deps
 
-docker or rust
-
-and
-
-python
+To build:
+ - `docker` or `rust`
+To run:
+ - `python`
 
 ## Building
 
@@ -59,7 +58,7 @@ solve_pow(
 	#the n many zero bits
 	k:int
 	#returns the successful integer
-)->int
+)
 ```
 
 ## Example
@@ -68,7 +67,3 @@ solve_pow(
 import proofofwork
 print(proofofwork.solve_pow("AAAAAAAAAA",26))
 ```
-
-
-from proofofwork import solve_pow
-
