@@ -1,0 +1,15 @@
+[package]
+name = "libproofofwork"
+version = "0.1.0"
+authors = ["jocular"]
+edition = "2018"
+
+[dependencies]
+sha2 = "*"
+byteorder = "*"
+num_cpus = "*"
+
+[lib]
+name = "proofofwork"
+path = "src/lib.rs"
+crate-type = ["cdylib", "lib", "staticlib"]
