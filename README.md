@@ -56,7 +56,7 @@ pub extern fn crack_pow(
 solve_pow(
 	#the challenge string
 	prefix:str, 
-	#the n many zero bits
+	#the k many zero bits
 	k:int
 	#returns the successful integer
 )
