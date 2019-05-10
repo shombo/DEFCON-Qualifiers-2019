@@ -4,6 +4,7 @@
 
 To build:
  - `docker` or `rust`
+
 To run:
  - `python`
 
