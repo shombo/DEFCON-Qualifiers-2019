@@ -1,0 +1,7 @@
+Babyheap notes
+==================
+
+* can only take two sizes:
+    * 0x00->0xf8 becomes malloc of 0xf8
+    * 0xf9->0x178 becomes mallof of 0x178
+
