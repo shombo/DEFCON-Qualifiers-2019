@@ -19,8 +19,6 @@ Action.ActionTaken
 Action.Amount
 Action.SeatNum
 Action.FK_Player_ID
-Assoc_Player_Location._id
-Assoc_Player_Stake._id
 Expense._id
 Expense.fk_player_id
 Expense.FK_Session_id
@@ -29,61 +27,21 @@ Expense.Amount
 Expense.CreateDate
 Expense.Note
 Expense.PaidForWithBuyin
-GameLocations.RowID
-GameLocations.LName
-GameLocations.Latitude
-GameLocations.Longitude
-GameLocations.Note
-GenericSupport.RowID
-GenericSupport.LName
-GenericSupport.LType
-GenericSupport.Empty_Value
-GenericSupport.SubType
-MoneyLoan._id
-MoneyLoan.CreateDate
-MoneyLoan.Amount
-MoneyLoan.loanWith
-MoneyLoan.PhoneNum
-MoneyLoan.APR
-MoneyLoan.AmtPaidBack
-MoneyLoan.IsLoan
-MoneyLoan.InterestCharged
-MoneyLoan.Note
 PlayerHandRanges._id
-Players._id
-Players.Name
-Players.PFRs
-Players.VPiPs
-Players.Hands
-Players.Notes
-Players.LastPlayed
-Players.StatRecord
-Players.StackSize
-Players.Hero
-Players.TellNotes
-Players.ExploitNotes
-Players.HandRangeNotes
-Players.TableNotes
-Players.QuickNotes
-Players.ThreeBets
-Players.ThreeBetHands
-Players.Location
-Players.Ethnicity
-Players.AgeRange
-Players.PFRs_LESS7
-Players.VPiPs_LESS7
-Players.Hands_LESS7
-Players.Male
-Players.Married
-PlrNote._id
-PlrNote.fk_player_id
-PlrNote.fk_plrnote_id
-PlrNote.Note
-PlrNote.NoteType
-PlrNote.CreateDate
-PlrNote.LastModifiedDate
-PlrNote.Stakes
-PlrNote.Mood
+PlayerHandRanges.fk_player_id
+PlayerHandRanges.LimpRange
+PlayerHandRanges.LimpCallRange
+PlayerHandRanges.LimpRaiseRange
+PlayerHandRanges.RaiseRange
+PlayerHandRanges.ColdCallRange
+PlayerHandRanges.OverCallRange
+PlayerHandRanges.ThreeBetRange
+PlayerHandRanges.FourBetRange
+PlayerHandRanges.StealingRange
+PlayerHandRanges.RaiseLimpersRange
+PlayerHandRanges.SBComplete
+PlayerHandRanges.EarlyPosRaise
+PlayerHandRanges.MiddlePosRaise
 Round.RowID
 Round.FK_Hand_ID
 Round.TheRound
@@ -186,6 +144,66 @@ PokerHand.RiverNotes
 PokerHand.IsAnalyzed
 PokerHand_Table.RowID
 PokerHand_Table.FK_Hand_ID
+PlrNote._id
+PlrNote.fk_player_id
+PlrNote.fk_plrnote_id
+PlrNote.Note
+PlrNote.NoteType
+PlrNote.CreateDate
+PlrNote.LastModifiedDate
+PlrNote.Stakes
+PlrNote.Mood
+Players._id
+Players.Name
+Players.PFRs
+Players.VPiPs
+Players.Hands
+Players.Notes
+Players.LastPlayed
+Players.StatRecord
+Players.StackSize
+Players.Hero
+Players.TellNotes
+Players.ExploitNotes
+Players.HandRangeNotes
+Players.TableNotes
+Players.QuickNotes
+Players.ThreeBets
+Players.ThreeBetHands
+Players.Location
+Players.Ethnicity
+Players.AgeRange
+Players.PFRs_LESS7
+Players.VPiPs_LESS7
+Players.Hands_LESS7
+Players.Male
+Players.Married
+GameLocations.RowID
+GameLocations.LName
+GameLocations.Latitude
+GameLocations.Longitude
+GameLocations.Note
+GenericSupport.RowID
+GenericSupport.LName
+GenericSupport.LType
+GenericSupport.Empty_Value
+GenericSupport.SubType
+Assoc_Player_Location._id
+Assoc_Player_Location.fk_player_id
+Assoc_Player_Location.fk_location_id
+Assoc_Player_Stake._id
+Assoc_Player_Stake.fk_player_id
+Assoc_Player_Stake.fk_stake_id
+MoneyLoan._id
+MoneyLoan.CreateDate
+MoneyLoan.Amount
+MoneyLoan.loanWith
+MoneyLoan.PhoneNum
+MoneyLoan.APR
+MoneyLoan.AmtPaidBack
+MoneyLoan.IsLoan
+MoneyLoan.InterestCharged
+MoneyLoan.Note
 '''
 
 SCHEMA = [x.strip() for x in SCHEMA]
@@ -255,6 +273,7 @@ class TableDumper:
         try:
             r = res.split(self.delim)[2].split(self.delim[::-1])[0]
         except IndexError:
+            print res
             r = 'IndexError :/'
         return r
 
@@ -323,7 +342,8 @@ def get_cols():
 
 if __name__ == '__main__':
     d = TableDumper()
-    cols = get_cols()
-    for tbl, cols in cols.items():
-        print '{}.{}'.format(tbl, cols)
-        d.dump_table(tbl, cols)
+    print d.get_count('mysql.user', 'user')
+    #cols = get_cols()
+    # for tbl, cols in cols.items():
+    #    print '{}.{}'.format(tbl, cols)
+    #    d.dump_table(tbl, cols)

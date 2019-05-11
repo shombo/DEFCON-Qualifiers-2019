@@ -1,0 +1,2 @@
+'RowID','CreateDate','FK_Stakes_ID','FK_Location_ID','FK_Session_ID','ButtonPos','PotSize','FK_Winner_ID','WinningSeat','BoardCard_Rank_1','BoardCard_Suit_1','BoardCard_Rank_2','BoardCard_Suit_2','BoardCard_Rank_3','BoardCard_Suit_3','BoardCard_Rank_4','BoardCard_Suit_4','BoardCard_Rank_5','BoardCard_Suit_5','HandHtml','PreFlopNotes','FlopNotes','TurnNotes','RiverNotes','IsAnalyzed'
+
