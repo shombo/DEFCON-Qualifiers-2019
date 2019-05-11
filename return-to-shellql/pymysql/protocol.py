@@ -32,7 +32,7 @@ def dump_packet(data):  # pragma: no cover
     try:
         for i in range(1, 7):
             f = sys._getframe(i)
-        print("-" * 66)
+        #print("-" * 66)
     except ValueError:
         pass
     dump_data = [data[i:i+16] for i in range_type(0, min(len(data), 256), 16)]
