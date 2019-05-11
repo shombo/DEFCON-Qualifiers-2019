@@ -1,71 +1,51 @@
-
-Enumerating Action
-Action.RowID
+Action.RowID
 Action.FK_Round_ID
 Action.ActionTaken
-Action.Amount
+Action.Amount
 Action.SeatNum
 Action.FK_Player_ID
-
-Enumerating Assoc_Player_Location
 Assoc_Player_Location._id
-
-Enumerating Assoc_Player_Stake
 Assoc_Player_Stake._id
-
-Enumerating Bankroll_Transaction
 Bankroll_Transaction._id
-
-Enumerating Expense
-Expense._id
+Expense._id
 Expense.fk_player_id
 Expense.FK_Session_id
 Expense.FK_GenSup_id
 Expense.Amount
 Expense.CreateDate
-Expense.Note
+Expense.Note
 Expense.PaidForWithBuyin
-
-Enumerating GameLocations
 GameLocations.RowID
 GameLocations.LName
 GameLocations.Latitude
 GameLocations.Longitude
 GameLocations.Note
-
-Enumerating GenericSupport
 GenericSupport.RowID
 GenericSupport.LName
 GenericSupport.LType
 GenericSupport.Empty_Value
 GenericSupport.SubType
-
-Enumerating MoneyLoan
-MoneyLoan._id
+MoneyLoan._id
 MoneyLoan.CreateDate
 MoneyLoan.Amount
 MoneyLoan.loanWith
 MoneyLoan.PhoneNum
-MoneyLoan.APR
+MoneyLoan.APR
 MoneyLoan.AmtPaidBack
 MoneyLoan.IsLoan
 MoneyLoan.InterestCharged
 MoneyLoan.Note
-
-Enumerating PlayerHandRanges
 PlayerHandRanges._id
-
-Enumerating Players
-Players._id
-Players.Name
-Players.PFRs
-Players.VPiPs
-Players.Hands
-Players.Notes
+Players._id
+Players.Name
+Players.PFRs
+Players.VPiPs
+Players.Hands
+Players.Notes
 Players.LastPlayed
 Players.StatRecord
 Players.StackSize
-Players.Hero
+Players.Hero
 Players.TellNotes
 Players.ExploitNotes
 Players.HandRangeNotes
@@ -79,21 +59,17 @@ Players.AgeRange
 Players.PFRs_LESS7
 Players.VPiPs_LESS7
 Players.Hands_LESS7
-Players.Male
+Players.Male
 Players.Married
-
-Enumerating PlrNote
-PlrNote._id
+PlrNote._id
 PlrNote.fk_player_id
 PlrNote.fk_plrnote_id
-PlrNote.Note
+PlrNote.Note
 PlrNote.NoteType
 PlrNote.CreateDate
 PlrNote.LastModifiedDate
 PlrNote.Stakes
-PlrNote.Mood
-
-Enumerating PokerHand
+PlrNote.Mood
 PokerHand.RowID
 PokerHand.CreateDate
 PokerHand.FK_Stakes_ID
@@ -119,12 +95,8 @@ PokerHand.FlopNotes
 PokerHand.TurnNotes
 PokerHand.RiverNotes
 PokerHand.IsAnalyzed
-
-Enumerating PokerHand_Table
 PokerHand_Table.RowID
 PokerHand_Table.FK_Hand_ID
-
-Enumerating PokerTable
 PokerTable._id
 PokerTable.Seat1
 PokerTable.Seat2
@@ -150,47 +122,37 @@ PokerTable.Seat10Enabled
 PokerTable.Seat11Enabled
 PokerTable.tablename
 PokerTable.isCurrent
-
-Enumerating Round
-Round.RowID
+Round.RowID
 Round.FK_Hand_ID
 Round.TheRound
-
-Enumerating Session
-Session.RowID
+Session.RowID
 Session.Player
 Session.Location
 Session.Stakes
 Session.CreateDate
 Session.Date_Played
-Session.Hours
+Session.Hours
 Session.Profit
-Session.Type
+Session.Type
 Session.Episode_Start
 Session.Break_Hours
 Session.Session_End
-Session.Rebuy
+Session.Rebuy
 Session.Rebuy_Cnt
 Session.Cash_out
-Session.Buyin
+Session.Buyin
 Session.FK_PokerTable
 Session.Break_Start
 Session.IsTournament
-
-Enumerating SessionNote
 SessionNote.RowID
 SessionNote.create_date
 SessionNote.Fk_Session_Id
 SessionNote.Won_Lost
 SessionNote.note
-
-Enumerating SessionPerf
 SessionPerf._id
 SessionPerf.FK_Session_id
-
-Enumerating Stake
-Stake.RowID
-Stake.LName
+Stake.RowID
+Stake.LName
 Stake.Default_Buyin
 Stake.SmallBlind_Amount
 Stake.BigBlind_Amount
