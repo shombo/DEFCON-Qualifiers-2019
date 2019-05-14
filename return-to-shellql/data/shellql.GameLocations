@@ -1,0 +1,23 @@
+RowID,LName,Latitude,Longitude,Note,Connected_Wifi,SSIDs,BSIDs,Checkout_Required,Conversion_Rate,Conversion_Rate_ID
+1,Home,33.0137991,-96.7302498,,SuitedConn2,SuitedConn2,e0:91:f5:f5:1b:6d,0,1,USD
+3,Wins,0,0,,,:WCNUsers.corporate.WCNUsers.corporate.guest.WGuest.WGuest,~00:04:74:92:bf:20.00:04:74:92:bf:22.00:04:74:92:cb:60.00:04,0,1,USD
+4,Bills in Frisco,33.1523,-96.8684,,motorola F6A,#motorola F6A.Soonerville.islandboy,600:12:25:57:4f:6a.00:14:6c:7c:5c:30.00:18:39:b9:fd:f1,0,1,USD
+5,4 Aces (Carrolton),32.9693,-96.8358,GAl and Charlie.Chance (dealer) used to be married to Rachel (,,,,0,1,USD
+6,The Eagle,32.9377,-96.8555,,,,,0,1,USD
+7,Venetian,36.1222,-115.171,&Terri.Sabrina.Tom - floor super visor,,eL777S.L777S.VenetianWiFi.L777S.L777S.-.L777S.VenetianWiFi.L,00:1a:1e:1a:c9:a0.00:1a:1e:1a:c8:40.00:17:a4:9a:eb:2d.00:,0,1,USD
+8,Sahara,36.142,-115.163,,,,,0,1,USD
+9,Jims (Addison),32.9381,-96.8464,,,,,0,1,USD
+10,Joes House,32.9584,-96.7707,,,/2WIRE522.STERRY_HOMENET.2WIRE691.CAIN.2WIRE294,Z00:23:51:5a:81:e9.00:1e:c7:16:f8:f1.00:22:a4:d5:f4:c9.00:22,0,1,USD
+11,The Spot,32.9853,-96.7621,,2WIRE537,!2WIRE537.tasenv.2WIRE027.NETGEAR,H00:1e:c7:0a:39:b9.00:11:95:e6:79:8e.00:1b:5b:0c:40:e1.00:1f,0,1,USD
+13,Greg's Game,33.03,-96.6488,,,lightningweb,00:09:5b:d6:92:86,0,1,USD
+15,Wynn,36.1275,-115.167, ,,Art.Engine Network,00:18:39:ce:27:16,0,1,USD
+16,Choctaw,0,0, ,,ChoctawGuest,00:1b:90:74:54:00,0,1,USD
+18,Harrahs New Orleans,29.9485,-90.0672, ,,NOR35tt,00:14:1b:60:ec:21,0,1,USD
+19,Rio,0,-96.7334, ,,\Rio-Convention-Cox.TT-Overdrive.hpsetup.Rio-Convention-Cox,~00:18:ba:c9:be:70.00:0b:6c:bd:f3:0f.9a:0b:be:84:e8:42.00:22,0,1,USD
+20,Dennis's Keller Game,32.9121,-97.2332, ,,TB4G9.Sanders Family Office,$00:21:63:5d:f5:df.00:1e:2a:59:71:84,0,1,USD
+21,Florida,26.6929,-80.0882, ,,Private.zephyr.Terrace at PBKC,600:18:18:ff:df:15.00:15:f9:b4:1e:70.00:18:18:ff:df:14,0,1,USD
+30,Default,0,0, ,,,,0,1,USD
+31,Wins,33.66,-97.1519,,,,02:1a:11:f0:2e:da,0,1,USD
+32,Bellagio,36.108937,-115.1717204,,,sca2.xca.cva.sca,H00:0b:86:c8:52:63.00:0b:86:c8:52:60.00:0b:86:c8:52:62.00:0b,0,1,USD
+33,Caesars,36.113356,-115.1749236,,,PURE_VENUEDRIVER,e0:91:f5:20:f2:63,0,1,USD
+34,Talking Stick,33.5404427,-111.870443,,,SM-N900V6C1E.pokeraudio.Samsung Galaxy S II_0723.TSR-Guest,00:23:eb:ae:23:5e.1c:99:4c:b7:6c:1e.00:23:eb:ae:23:5d.00:,1,1,USD

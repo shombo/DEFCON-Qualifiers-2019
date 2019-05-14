@@ -1,0 +1,305 @@
+8d7
+< typedef unsigned int    uint;
+65c64
+< typedef struct Parameters Parameters, *PParameters;
+---
+> typedef struct Throwable Throwable, *PThrowable;
+67c66
+< struct Parameters { // PlaceHolder Structure
+---
+> struct Throwable { // PlaceHolder Structure
+70c69
+< typedef struct Exception Exception, *PException;
+---
+> typedef struct Parameters Parameters, *PParameters;
+72c71
+< struct Exception { // PlaceHolder Structure
+---
+> struct Parameters { // PlaceHolder Structure
+207,213d205
+< typedef struct Elf64_Dyn Elf64_Dyn, *PElf64_Dyn;
+< 
+< struct Elf64_Dyn {
+<     enum Elf64_DynTag d_tag;
+<     qword d_val;
+< };
+< 
+234a227,233
+> typedef struct Elf64_Dyn Elf64_Dyn, *PElf64_Dyn;
+> 
+> struct Elf64_Dyn {
+>     enum Elf64_DynTag d_tag;
+>     qword d_val;
+> };
+> 
+284c283
+< void FUN_00101260(void)
+---
+> void FUN_00101320(void)
+293a293,301
+> void __printf_chk(void)
+> 
+> {
+>   __printf_chk();
+>   return;
+> }
+> 
+> 
+> 
+334,342d341
+< void __cxa_finalize(void)
+< 
+< {
+<   __cxa_finalize();
+<   return;
+< }
+< 
+< 
+< 
+369c368
+< void add(char *param_1,FuncDef1 *param_2,initializer_list *param_3)
+---
+> void add(char *param_1,FuncDef0 *param_2,initializer_list *param_3)
+399c398,401
+<   size_t sVar1;
+---
+>   int iVar1;
+>   int iVar2;
+>   int iVar3;
+>   size_t sVar4;
+400a403
+>   undefined8 uVar5;
+402,407c405,419
+<   sVar1 = strlen(pcParm1);
+<   UNRECOVERED_JUMPTABLE = (code *)mmap((void *)0x0,(long)(int)sVar1,7,0x22,-1,0);
+<   memcpy(UNRECOVERED_JUMPTABLE,pcParm1,(long)(int)sVar1);
+<   alarm(0x1e);
+<   prctl(0x16,1);
+<                     // WARNING: Could not recover jumptable at 0x001014af. Too many branches
+---
+>   sVar4 = strlen(pcParm1);
+>   UNRECOVERED_JUMPTABLE = (code *)mmap((void *)0x0,(long)(int)sVar4,7,0x22,-1,0);
+>   memcpy(UNRECOVERED_JUMPTABLE,pcParm1,(long)(int)sVar4);
+>   uVar5 = seccomp_init(0);
+>   __printf_chk(1,"setting seccomps\n");
+>   iVar1 = seccomp_rule_add(uVar5,0x7fff0000,0x3c,0);
+>   iVar2 = seccomp_rule_add(uVar5,0x7fff0000,0,0);
+>   iVar3 = seccomp_rule_add(uVar5,0x7fff0000,1,0);
+>   if (iVar1 + iVar2 + iVar3 != 0) {
+>     perror("seccomp_rule_add failed");
+>                     // WARNING: Subroutine does not return
+>     exit(-2);
+>   }
+>   seccomp_load(uVar5);
+>                     // WARNING: Could not recover jumptable at 0x001016b0. Too many branches
+427a440,450
+> // WARNING: Unknown calling convention yet parameter storage is locked
+> 
+> void perror(char *__s)
+> 
+> {
+>   perror(__s);
+>   return;
+> }
+> 
+> 
+> 
+458a482,492
+> // WARNING: Unknown calling convention yet parameter storage is locked
+> 
+> void handle(Throwable *param_1)
+> 
+> {
+>   handle(param_1);
+>   return;
+> }
+> 
+> 
+> 
+494c528
+< int prctl(int __option,...)
+---
+> void exit(int __status)
+497,511c531,532
+<   int iVar1;
+<   
+<   iVar1 = prctl(__option);
+<   return iVar1;
+< }
+< 
+< 
+< 
+< // WARNING: Unknown calling convention yet parameter storage is locked
+< 
+< void handle(Exception *param_1)
+< 
+< {
+<   handle(param_1);
+<   return;
+---
+>                     // WARNING: Subroutine does not return
+>   exit(__status);
+544a566,574
+> void seccomp_rule_add(void)
+> 
+> {
+>   seccomp_rule_add();
+>   return;
+> }
+> 
+> 
+> 
+585c615
+< void __gmon_start__(void)
+---
+> void seccomp_init(void)
+588c618
+<   __gmon_start__();
+---
+>   seccomp_init();
+594c624,629
+< // WARNING: Unknown calling convention yet parameter storage is locked
+---
+> void seccomp_load(void)
+> 
+> {
+>   seccomp_load();
+>   return;
+> }
+596c631,633
+< uint alarm(uint __seconds)
+---
+> 
+> 
+> void __cxa_finalize(void)
+599,602c636,637
+<   uint uVar1;
+<   
+<   uVar1 = alarm(__seconds);
+<   return uVar1;
+---
+>   __cxa_finalize();
+>   return;
+607,608c642,643
+< // WARNING: Removing unreachable block (ram,0x0010136b)
+< // WARNING: Removing unreachable block (ram,0x00101377)
+---
+> // WARNING: Removing unreachable block (ram,0x00101537)
+> // WARNING: Removing unreachable block (ram,0x00101543)
+618,619c653,654
+< // WARNING: Removing unreachable block (ram,0x001013b8)
+< // WARNING: Removing unreachable block (ram,0x001013c4)
+---
+> // WARNING: Removing unreachable block (ram,0x00101588)
+> // WARNING: Removing unreachable block (ram,0x00101594)
+632,635c667,668
+<   if (completed_7594 == 0) {
+<     __cxa_finalize(__dso_handle);
+<     deregister_tm_clones();
+<     completed_7594 = 1;
+---
+>   if (completed_7697 != 0) {
+>     return;
+636a670,672
+>   __cxa_finalize(__dso_handle);
+>   deregister_tm_clones();
+>   completed_7697 = 1;
+645,649d680
+<   if (__JCR_END__ == 0) {
+<     register_tm_clones();
+<     return;
+<   }
+<   _Jv_RegisterClasses();
+659c690,693
+<   size_t sVar1;
+---
+>   int iVar1;
+>   int iVar2;
+>   int iVar3;
+>   size_t sVar4;
+660a695
+>   undefined8 uVar5;
+662,667c697,707
+<   sVar1 = strlen(pcParm1);
+<   UNRECOVERED_JUMPTABLE = (code *)mmap((void *)0x0,(long)(int)sVar1,7,0x22,-1,0);
+<   memcpy(UNRECOVERED_JUMPTABLE,pcParm1,(long)(int)sVar1);
+<   alarm(0x1e);
+<   prctl(0x16,1);
+<                     // WARNING: Could not recover jumptable at 0x001014af. Too many branches
+---
+>   sVar4 = strlen(pcParm1);
+>   UNRECOVERED_JUMPTABLE = (code *)mmap((void *)0x0,(long)(int)sVar4,7,0x22,-1,0);
+>   memcpy(UNRECOVERED_JUMPTABLE,pcParm1,(long)(int)sVar4);
+>   uVar5 = seccomp_init(0);
+>   __printf_chk(1,"setting seccomps\n");
+>   iVar1 = seccomp_rule_add(uVar5,0x7fff0000,0x3c,0);
+>   iVar2 = seccomp_rule_add(uVar5,0x7fff0000,0,0);
+>   iVar3 = seccomp_rule_add(uVar5,0x7fff0000,1,0);
+>   if (iVar1 + iVar2 + iVar3 == 0) {
+>     seccomp_load(uVar5);
+>                     // WARNING: Could not recover jumptable at 0x001016b0. Too many branches
+669,670c709,714
+<   (*UNRECOVERED_JUMPTABLE)();
+<   return;
+---
+>     (*UNRECOVERED_JUMPTABLE)();
+>     return;
+>   }
+>   perror("seccomp_rule_add failed");
+>                     // WARNING: Subroutine does not return
+>   exit(-2);
+687c731
+<                     // try { // try from 001014eb to 001014fc has its CatchHandler @ 0010152e
+---
+>                     // try { // try from 001016fb to 0010170c has its CatchHandler @ 0010173e
+705d748
+<   undefined1 myExtension [144];
+706a750
+>   undefined1 myExtension [144];
+710c754
+<     iVar1 = __cxa_guard_acquire(0x3020d0);
+---
+>     iVar1 = __cxa_guard_acquire(0x302040);
+712,715c756,759
+<                     // try { // try from 0010160a to 0010160e has its CatchHandler @ 0010163a
+<       Extension((Extension *)0x302040,"shellme","1.0",0x133776e);
+<       __cxa_guard_release(0x3020d0);
+<       __cxa_atexit(_Extension,0x302040,&__dso_handle);
+---
+>                     // try { // try from 0010181a to 0010181e has its CatchHandler @ 0010184a
+>       Extension((Extension *)0x302060,"shellme","1.0",0x133776e);
+>       __cxa_guard_release(0x302040);
+>       __cxa_atexit(_Extension,0x302060,&__dso_handle);
+718c762
+<   add((undefined1 *)&ram0x00302040,(FuncDef1 *)"shellme",
+---
+>   add((undefined1 *)&ram0x00302060,(FuncDef0 *)"shellme",
+753,754c797
+<   code **ppcVar2;
+<   char cVar3;
+---
+>   char cVar2;
+762,763c805,806
+<   cVar3 = valid(param_1,param_2);
+<   if (cVar3 != 0) {
+---
+>   cVar2 = valid(param_1,param_2);
+>   if (cVar2 != 0) {
+765c808
+<                     // try { // try from 001016d6 to 001016da has its CatchHandler @ 00101729
+---
+>                     // try { // try from 001018e9 to 001018ed has its CatchHandler @ 00101939
+767c810
+<                     // try { // try from 001016e1 to 001016e5 has its CatchHandler @ 0010172b
+---
+>                     // try { // try from 001018f4 to 001018f8 has its CatchHandler @ 00101959
+771d813
+<     ppcVar2 = local_60;
+775d816
+<       ppcVar2 = local_68;
+777,778c818,819
+<     if (ppcVar2 != (code **)0x0) {
+<       operator_delete(ppcVar2);
+---
+>     if (local_68 != (code **)0x0) {
+>       operator_delete(local_68);
