@@ -198,7 +198,7 @@ if __name__ == '__main__':
     cols = ["COMMAND", "INFO"]
     while True:
         data = d.dump_table(tbl, cols, as_list=True)
-        for row in table_data:
+        for row in data:
             if 'OOO{' in row:
                 row = row[row.index('OOO{'):]
                 if '}' in row:
